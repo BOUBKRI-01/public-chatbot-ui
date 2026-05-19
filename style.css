@@ -12,7 +12,7 @@ body {
 
 .main-container {
     display: flex;
-    width: 920px;
+    width: 950px;
     height: 620px;
     background: rgba(30, 30, 45, 0.65);
     backdrop-filter: blur(15px);
@@ -22,7 +22,6 @@ body {
     overflow: hidden;
 }
 
-/* Panneau de rendu visuel (Gauche) */
 .visual-panel {
     flex: 1;
     display: flex;
@@ -36,7 +35,6 @@ body {
     width: 100%;
 }
 
-/* Robot Avatar et Etats */
 .robot-box {
     padding: 25px;
     display: flex;
@@ -99,7 +97,6 @@ body {
     text-transform: uppercase;
 }
 
-/* Zone Chat (Droite) */
 .chat-container {
     width: 440px;
     display: flex;
@@ -205,7 +202,6 @@ button#btn-send, button#btn-mic {
     font-weight: bold;
 }
 
-/* Animations de Synchronisation */
 @keyframes pulse {
     0% { box-shadow: 0 0 10px rgba(255, 204, 0, 0.2); border-color: #ffcc00; }
     100% { box-shadow: 0 0 25px rgba(0, 255, 204, 0.6); border-color: #00ffcc; }
