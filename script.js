@@ -5,52 +5,73 @@ const avatar = document.getElementById('robot-avatar');
 const statusText = document.getElementById('robot-status');
 
 // ==========================================
-// MOTEUR DE RENDU 3D INTERACTIF (Three.js)
+// MOTEUR DE RENDU 3D DE LA VOITURE (Three.js)
 // ==========================================
 let scene, camera, renderer, carMesh;
 let targetRotationSpeed = 0.005;
 
 function init3D() {
-    const container = document.getElementById('car-3d-container');
+    const container = document.getElementById('car-33d-container') || document.getElementById('car-3d-container');
     
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
-    camera.position.z = 6;
+    camera.position.set(0, 0.8, 4.5); // Positionnement de la caméra pour voir la voiture en entier
 
     renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(container.clientWidth, container.clientHeight);
     container.appendChild(renderer.domElement);
 
-    // Système d'éclairage
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+    // Éclairage global
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
     scene.add(ambientLight);
     
-    const directionalLight = new THREE.DirectionalLight(0xffcc00, 0.8);
-    directionalLight.position.set(3, 5, 3);
+    const directionalLight = new THREE.DirectionalLight(0xffcc00, 1.0);
+    directionalLight.position.set(3, 6, 4);
     scene.add(directionalLight);
 
-    // Structure géométrique épurée représentative du châssis aérodynamique
-    const geometry = new THREE.ConeGeometry(1.4, 2.8, 4); 
-    const material = new THREE.MeshStandardMaterial({ 
-        color: 0x484870, 
-        wireframe: true, 
-        roughness: 0.2
-    });
+    // Chargement du fichier 3D externe de la voiture
+    const loader = new THREE.GLTFLoader();
     
-    carMesh = new THREE.Mesh(geometry, material);
-    carMesh.rotation.x = 1.3; 
-    scene.add(carMesh);
+    // Remplace 'clio.glb' par le nom de ton fichier s'il est différent
+    loader.load('clio.glb', function (gltf) {
+        carMesh = gltf.scene;
+        carMesh.scale.set(1.0, 1.0, 1.0); // Ajuste l'échelle selon la taille de ton modèle 3D
+        carMesh.position.set(0, -0.5, 0);
 
-    animate3D();
+        // Application du style technologique filaire (Wireframe) sur chaque élément géométrique
+        carMesh.traverse((child) => {
+            if (child.isMesh) {
+                child.material.wireframe = true; 
+                child.material.color.setHex(0x484870); // Bleu-gris technologique
+            }
+        });
+
+        scene.add(carMesh);
+        animate3D();
+        
+    }, undefined, function (error) {
+        console.warn("Fichier 'clio.glb' introuvable. Chargement du châssis de secours.");
+        
+        // Châssis de secours (Cône géométrique) si ton fichier 3D n'est pas encore prêt
+        const geometry = new THREE.ConeGeometry(1.2, 2.5, 4);
+        const material = new THREE.MeshStandardMaterial({ color: 0x484870, wireframe: true });
+        carMesh = new THREE.Mesh(geometry, material);
+        carMesh.rotation.x = 1.3;
+        scene.add(carMesh);
+        animate3D();
+    });
 }
 
 function animate3D() {
     requestAnimationFrame(animate3D);
     
-    // Convergence progressive vers la vitesse de rotation cible
-    carMesh.rotation.z += targetRotationSpeed;
-    if (targetRotationSpeed > 0.005) {
-        targetRotationSpeed -= 0.002; // Décélération progressive après calcul
+    if (carMesh) {
+        carMesh.rotation.y += targetRotationSpeed; // Rotation autour de l'axe vertical
+        
+        // Décélération fluide de la rotation après une accélération de calcul
+        if (targetRotationSpeed > 0.005) {
+            targetRotationSpeed -= 0.002;
+        }
     }
     
     renderer.render(scene, camera);
@@ -66,7 +87,7 @@ window.onresize = () => {
 };
 
 // ==========================================
-// PIPELINE DE GESTION DES REQUÊTES CHAT
+// PIPELINE CHATBOT & INTERACTION
 // ==========================================
 
 function setMode(mode) {
@@ -74,11 +95,17 @@ function setMode(mode) {
     document.getElementById('btn-general').classList.toggle('active', mode === 'general');
     document.getElementById('btn-voiture').classList.toggle('active', mode === 'voiture');
     
-    if(mode === 'voiture') {
-        carMesh.material.color.setHex(0xffcc00); // Jaune d'ingénierie Clio E-Tech
-    } else {
-        carMesh.material.color.setHex(0x484870); // Bleu technologique neutre
-    }
+    if (!carMesh) return;
+    
+    carMesh.traverse((child) => {
+        if (child.isMesh) {
+            if(mode === 'voiture') {
+                child.material.color.setHex(0xffcc00); // Jaune Clio E-Tech
+            } else {
+                child.material.color.setHex(0x484870); // Style neutre
+            }
+        }
+    });
 }
 
 function checkEnter(event) {
@@ -93,10 +120,10 @@ async function sendQuestion() {
     appendMessage(question, 'user');
     input.value = '';
 
-    // ÉTAT : L'IA est en cours d'analyse
+    // Changement d'état visuel du robot et de la voiture
     avatar.className = "robot-avatar thinking";
     statusText.innerText = "Traitement...";
-    targetRotationSpeed = 0.08; // Accélération du maillage 3D
+    targetRotationSpeed = 0.09; // La voiture tourne vite pendant la réflexion de l'IA
 
     try {
         const response = await fetch(API_URL, {
@@ -110,11 +137,10 @@ async function sendQuestion() {
         if (data.reponse) {
             appendMessage(data.reponse, 'bot');
             
-            // ÉTAT : Émission de la réponse vocale
+            // Activation de l'animation de parole du robot
             avatar.className = "robot-avatar speaking";
             statusText.innerText = "Réponse vocale...";
             
-            // Calcul automatique de la durée de parole selon le volume textuel
             const duration = Math.max(2500, data.reponse.length * 70); 
             setTimeout(() => {
                 avatar.className = "robot-avatar";
@@ -122,11 +148,11 @@ async function sendQuestion() {
             }, duration);
 
         } else {
-            appendMessage("⚠️ Réponse invalide du serveur.", 'bot');
+            appendMessage("⚠️ Réponse invalide.", 'bot');
             resetRobot();
         }
     } catch (error) {
-        appendMessage("❌ Connexion perdue avec l'hôte local Python.", 'bot');
+        appendMessage("❌ Erreur : Impossible de contacter l'API Python.", 'bot');
         resetRobot();
     }
 }
@@ -146,15 +172,9 @@ function appendMessage(text, sender) {
     chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-// ==========================================
-// RECONNAISSANCE VOCALE DU NAVIGATEUR (WEB)
-// ==========================================
 function toggleMic() {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SpeechRecognition) {
-        alert("Votre navigateur ne supporte pas la capture vocale native.");
-        return;
-    }
+    if (!SpeechRecognition) return;
 
     const recognition = new SpeechRecognition();
     recognition.lang = 'fr-FR';
