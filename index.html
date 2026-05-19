@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clio E-TECH - Assistant Connecté</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="chat-container">
+        <div class="chat-header">
+            <h2>🚗 Assistant Clio E-TECH</h2>
+            <div class="mode-selector">
+                <button id="btn-general" class="active" onclick="setMode('general')">🧠 Général</button>
+                <button id="btn-voiture" onclick="setMode('voiture')">⚙️ Spécifications</button>
+            </div>
+        </div>
+
+        <div class="chat-box" id="chat-box">
+            <div class="message bot">Bonjour ! Je suis l'assistant de votre Clio E-TECH. Posez-moi vos questions par texte ou à la voix.</div>
+        </div>
+
+        <div class="chat-input-area">
+            <input type="text" id="user-input" placeholder="Écrivez votre message..." onkeypress="checkEnter(event)">
+            <button id="btn-send" onclick="sendQuestion()">⚡</button>
+            <button id="btn-mic" onclick="toggleMic()">🎤</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
