@@ -1607,3 +1607,92 @@ body {
     0%, 100% { opacity: 1; }
     50%       { opacity: 0; }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   MOBILE BOTTOM MODE BAR
+═══════════════════════════════════════════════════════════ */
+.mobile-mode-bar {
+    display: none; /* caché sur desktop */
+}
+
+@media (max-width: 900px) {
+    .mobile-mode-bar {
+        display: flex;
+        position: fixed;
+        bottom: 0; left: 0; right: 0;
+        z-index: 300;
+        background: rgba(6, 14, 26, 0.97);
+        border-top: 1px solid var(--border);
+        backdrop-filter: blur(16px);
+        height: 56px;
+        padding: 0 16px;
+        gap: 8px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Pousser le chat vers le haut pour éviter que la barre cache le contenu */
+    .chat-statusbar {
+        padding-bottom: 60px;
+    }
+
+    .input-zone {
+        padding-bottom: 64px;
+    }
+
+    /* Sur tablette/mobile : masquer statusbar du chat (remplacée par bottom bar) */
+    .chat-statusbar {
+        display: none;
+    }
+
+    .input-zone {
+        padding-bottom: 8px;
+    }
+
+    /* Décaler toute la main-content au-dessus de la barre */
+    .main-content {
+        padding-bottom: 56px;
+    }
+
+    .mobile-mode-btn {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        background: transparent;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        color: var(--text-dim);
+        cursor: pointer;
+        padding: 6px 12px;
+        height: 42px;
+        font-family: var(--font-display);
+        font-size: 0.55rem;
+        letter-spacing: 1.5px;
+        transition: var(--transition);
+        max-width: 160px;
+    }
+
+    .mobile-mode-btn i {
+        font-size: 1rem;
+        margin-bottom: 1px;
+    }
+
+    .mobile-mode-btn span {
+        font-size: 0.5rem;
+        letter-spacing: 1px;
+    }
+
+    .mobile-mode-btn.active {
+        border-color: var(--cyan-dim);
+        color: var(--cyan);
+        background: rgba(0, 212, 255, 0.08);
+        box-shadow: 0 0 12px var(--cyan-glow);
+    }
+
+    .mobile-mode-btn:active {
+        transform: scale(0.96);
+    }
+}
