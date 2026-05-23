@@ -1,8 +1,0 @@
-flask
-flask-cors
-openai
-gtts
-langdetect
-pygame
-SpeechRecognition
-keyboard
