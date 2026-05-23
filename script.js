@@ -152,7 +152,7 @@ $('welcome-time').textContent = (() => {
     scene.fog = new THREE.FogExp2(0x010810, 0.05);
 
     const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
-    camera.position.set(3.5, 1.2, 4);
+    camera.position.set(2.4, 0.9, 2.8);
     camera.lookAt(0, 0, 0);
 
     function resize() {
@@ -270,7 +270,7 @@ $('welcome-time').textContent = (() => {
                     const center = box.getCenter(new THREE.Vector3());
                     const size = box.getSize(new THREE.Vector3());
                     const maxDim = Math.max(size.x, size.y, size.z);
-                    const scale = 2.0 / maxDim;
+                    const scale = 2.8 / maxDim;
                     model.scale.setScalar(scale);
                     model.position.sub(center.multiplyScalar(scale));
                     model.position.y += 0.1;
