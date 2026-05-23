@@ -719,7 +719,13 @@ function renderHistory() {
 function setMode(mode) {
     currentMode = mode;
 
+    // Sidebar buttons
     document.querySelectorAll('.mode-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.mode === mode);
+    });
+
+    // Mobile bottom bar buttons
+    document.querySelectorAll('.mobile-mode-btn').forEach(b => {
         b.classList.toggle('active', b.dataset.mode === mode);
     });
 
@@ -731,6 +737,14 @@ function setMode(mode) {
 
 document.querySelectorAll('.mode-btn').forEach(btn => {
     btn.addEventListener('click', () => setMode(btn.dataset.mode));
+});
+
+// Mobile bottom bar mode buttons
+document.querySelectorAll('.mobile-mode-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        setMode(btn.dataset.mode);
+        playUIBeep(1000, 0.07);
+    });
 });
 
 /* ═══════════════════════════════════════════════════════════
