@@ -8,7 +8,7 @@
 /* ═══════════════════════════════════════════════════════════
    CONFIG
 ═══════════════════════════════════════════════════════════ */
-const API_URL = "public-chatbot-ui-production.up.railway.app/chat";
+const API_URL = "https://public-chatbot-ui-production.up.railway.app/chat";
 
 /* ═══════════════════════════════════════════════════════════
    STATE
