@@ -1472,9 +1472,87 @@ body {
         font-size: 0.65rem;
     }
 
-    /* ── Sidebar (tiroir) ── */
+    /* ── Sidebar (tiroir) — compacte sur mobile ── */
     .sidebar {
         width: min(300px, 85vw);
+        height: 100dvh;
+        height: 100vh;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    /* Brand : padding réduit, police plus petite */
+    .sidebar-brand {
+        padding: 16px 16px 12px;
+    }
+
+    .brand-r {
+        font-size: 1.8rem;
+    }
+
+    .brand-sub {
+        font-size: 0.75rem;
+    }
+
+    .brand-model {
+        font-size: 0.9rem;
+        letter-spacing: 2px;
+    }
+
+    .brand-tag {
+        font-size: 0.58rem;
+        margin-top: 2px;
+    }
+
+    /* Status : padding réduit */
+    .sys-status {
+        padding: 10px 16px;
+        gap: 6px;
+    }
+
+    .status-item {
+        font-size: 0.62rem;
+    }
+
+    /* Modes : affichage garanti des 2 boutons */
+    .sidebar-modes {
+        padding: 10px 12px;
+        flex: 0 0 auto;
+    }
+
+    .modes-label {
+        margin-bottom: 8px;
+        font-size: 0.55rem;
+    }
+
+    .mode-btn {
+        padding: 10px 12px;
+        margin-bottom: 6px;
+    }
+
+    .mode-icon {
+        width: 30px;
+        height: 30px;
+        font-size: 0.85rem;
+    }
+
+    .mode-name {
+        font-size: 0.68rem;
+    }
+
+    .mode-desc {
+        font-size: 0.58rem;
+    }
+
+    /* History : hauteur max réduite */
+    .sidebar-history {
+        max-height: 120px;
+        padding: 10px 12px;
+    }
+
+    /* Footer : compact */
+    .sidebar-footer {
+        padding: 10px 16px;
     }
 }
 
